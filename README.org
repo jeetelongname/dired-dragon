@@ -1,0 +1,4 @@
+#+TITLE: Readme
+
+this package adds drag and drop abilities into dired using [[https://github.com/mwh/dragon][dragon]] (yes you need
+to install it)
