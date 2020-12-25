@@ -7,7 +7,8 @@ bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in e
 ** How does it work?
 *** Source commands
 you mark the file like normal (using =m=) and call one of these commands
-(flags are what I use for dragon)
+(flags are what I use for dragon) it will also work if you are sort of on the
+file
 | Command                     | Use                                           | flags   |
 |-----------------------------+-----------------------------------------------+---------|
 | ~dired-dragon~              | dumps all the files and exits once done       | =-x -a= |
@@ -20,6 +21,12 @@ you mark the file like normal (using =m=) and call one of these commands
 | ~dired-dragon-take-in~      | TODO drop files into the current dired buffer | =-t -x= |
 | ~dired-dragon-take-in-stay~ | TODO same as above but it will stick around   | =-t=    |
 
+I recommend binding them unless you are a =M-x= god
+#+begin_src emacs-lisp
+(define-key dired-mode-map (kbd "C-d d" #'dired-dragon))
+(define-key dired-mode-map (kbd "C-d s" #'dired-dragon-stay))
+(define-key dired-mode-map (kbd "C-d i" #'dired-dragon-individual))
+#+end_src
 **  Installation
 *** straight
 #+begin_src emacs-lisp
@@ -37,5 +44,5 @@ you mark the file like normal (using =m=) and call one of these commands
 #+end_src
 
 ** Contributing.
-[[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. this is my first "formal" package so
+[[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. This is my first "formal" package so
 any pointers would be appreciated
