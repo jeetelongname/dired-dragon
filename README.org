@@ -1,5 +1,41 @@
 #+TITLE: dragon bindings for dired
 
-this package adds drag and drop abilities into dired using [[https://github.com/mwh/dragon][dragon]] (yes you need
-to install it). this is very much a work in progress and is not ready at all.
-ino other words /here be dragons/
+Have you every needed to drag and drop something but then realised that you have
+to open a /shudders/ non emacs file manger? Well no more! This package adds
+bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in emacs a little more!
+
+** How does it work?
+*** Source commands
+you mark the file like normal (using =m=) and call one of these commands
+(flags are what I use for dragon)
+| Command                     | Use                                           | flags   |
+|-----------------------------+-----------------------------------------------+---------|
+| ~dired-dragon~              | dumps all the files and exits once done       | =-x -a= |
+| ~dired-dragon-stay~         | sticks around but dumps all the files         | =-a=    |
+| ~dired-dragon-individual~   | you can individually drag and drop the files  |         |
+
+*** TODO Sink commands
+| commands                    | use                                           | flags   |
+|-----------------------------+-----------------------------------------------+---------|
+| ~dired-dragon-take-in~      | TODO drop files into the current dired buffer | =-t -x= |
+| ~dired-dragon-take-in-stay~ | TODO same as above but it will stick around   | =-t=    |
+
+**  Installation
+*** straight
+#+begin_src emacs-lisp
+(use-package dired-dragon
+  :straight (:host github
+             :repo "jeetelongname/dired-dragon"))
+#+end_src
+*** Doom
+#+begin_src emacs-lisp
+;; packages.el
+(package! :recipe (:host github
+                   :repo "jeetelongname/dired-dragon"))
+;; config.el
+(use-package! dired-dragon)
+#+end_src
+
+** Contributing.
+[[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. this is my first "formal" package so
+any pointers would be appreciated
