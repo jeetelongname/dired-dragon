@@ -29,41 +29,37 @@
   "Dired dragon customise group."
   :group 'convenience)
 
-(defvar dired-dragon-location (executable-find "dragon"))
+(defvar dired-dragon-location (executable-find "dragon")
+  "The location of dragon. may need changing depending on what dragon is called.")
 
-(defun dired-dragon--make-string (l)
-  "Make a string from the selected files. takes `L' as an argument."
-  (message l  "this is a test")
-  (if (> (length l) 1)
-      (mapconcat 'identity l " ") (car l)))
+(defun dired-dragon--core ()
+  "This is most of the core logic for dired-dragon."
+  (concat dired-dragon-location
+          (dired-dragon--strip-parens
+           (format " %s"  (dired-get-marked-files)))))
 
-;;;###autoload
+(defun dired-dragon--strip-parens (s)
+  "Strip parens from a string using regex find and replace.
+takes argument S. Its a bit crude but it works"
+  (replace-regexp-in-string "(" "" (replace-regexp-in-string ")" "" s)))
+
 (defun dired-dragon ()
-  "The Default."
+  "The Default. will drag all items selected and exit once done.
+its my biggest uscase"
   (interactive)
-  (message "hell")
   (start-process-shell-command
-   "dragon" "*dragon*"
-   (concat dired-dragon-location (dired-dragon--make-string  (list (dired-get-marked-files))))))
+   "dragon" "*dragon*" (concat (dired-dragon--core) " -x -a")))
 
-;; (defun dired-dragon-stay ())
-
+;; TODO
+(defun dired-dragon-stay ()
+  "If you have a lot of dragging and dropping to do.
+it will stick around but will still drop all of them"
+  (start-process-shell-command
+   "dragon-stay" "*dragon*" (concat (dired-dragon--core) " -a")))
+;; TODO
 ;; (defun dired-dragon-individual ())
-
+;; TODO
 ;; (defun dired-dragon-take-in ())
+
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
-
-;; (defun dired-do-delete (&optional arg)
-;;   "Delete all marked (or next ARG) files.
-;; `dired-recursive-deletes' controls whether deletion of
-;; non-empty directories is allowed."
-;;   ;; This is more consistent with the file marking feature than
-;;   ;; dired-do-flagged-delete.
-;;   (interactive "P")
-;;   (dired-internal-do-deletions
-;;    (nreverse
-;;     ;; this may move point if ARG is an integer
-;;     (dired-map-over-marks (cons (dired-get-filename) (point))
-;; 			  arg))
-;;    arg t))
