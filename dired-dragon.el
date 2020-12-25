@@ -32,6 +32,8 @@
 (defvar dired-dragon-location (executable-find "dragon")
   "The location of dragon. may need changing depending on what dragon is called.")
 
+(defvar dired-dragon--buffer "*dragon*")
+
 (defun dired-dragon--core ()
   "This is most of the core logic for dired-dragon."
   (concat dired-dragon-location
@@ -48,16 +50,21 @@ takes argument S. Its a bit crude but it works"
 its my biggest uscase"
   (interactive)
   (start-process-shell-command
-   "dragon" "*dragon*" (concat (dired-dragon--core) " -x -a")))
+   "dragon" dired-dragon--buffer (concat (dired-dragon--core) " -x -a")))
 
-;; TODO
 (defun dired-dragon-stay ()
   "If you have a lot of dragging and dropping to do.
 it will stick around but will still drop all of them"
+  (interactive)
   (start-process-shell-command
-   "dragon-stay" "*dragon*" (concat (dired-dragon--core) " -a")))
-;; TODO
-;; (defun dired-dragon-individual ())
+   "dragon-stay" dired-dragon--buffer (concat (dired-dragon--core) " -a")))
+
+(defun dired-dragon-individual ()
+  "Something."
+  (interactive)
+  (start-process-shell-command
+   "dragon-individual" dired-dragon--buffer (dired-dragon--core)))
+
 ;; TODO
 ;; (defun dired-dragon-take-in ())
 
