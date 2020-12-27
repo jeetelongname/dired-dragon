@@ -43,6 +43,11 @@ I recommend binding them unless you are a =M-x= god
 (use-package! dired-dragon)
 #+end_src
 
+** Known Bugs
++ TODO The file will not open if there are spaces in the name.
+  yeah this is not ideal and a me issue (not a dragon issue) if this is still
+  here then I have forgotten about this entry or its not fixed.
+
 ** Contributing.
 [[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. This is my first "formal" package so
 any pointers would be appreciated

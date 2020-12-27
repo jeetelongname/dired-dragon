@@ -45,6 +45,7 @@
 takes argument S. Its a bit crude but it works"
   (replace-regexp-in-string "(" "" (replace-regexp-in-string ")" "" s)))
 
+;;;###autoload
 (defun dired-dragon ()
   "The Default. will drag all items selected and exit once done.
 its my biggest uscase"
@@ -52,6 +53,7 @@ its my biggest uscase"
   (start-process-shell-command
    "dragon" dired-dragon--buffer (concat (dired-dragon--core) " -x -a")))
 
+;;;###autoload
 (defun dired-dragon-stay ()
   "If you have a lot of dragging and dropping to do.
 it will stick around but will still drop all of them"
@@ -59,6 +61,7 @@ it will stick around but will still drop all of them"
   (start-process-shell-command
    "dragon-stay" dired-dragon--buffer (concat (dired-dragon--core) " -a")))
 
+;;;###autoload
 (defun dired-dragon-individual ()
   "Something."
   (interactive)
@@ -68,5 +71,7 @@ it will stick around but will still drop all of them"
 ;; TODO
 ;; (defun dired-dragon-take-in ())
 
+;;TODO
+;; (defun dired-dragon-take-in-stay ())
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
