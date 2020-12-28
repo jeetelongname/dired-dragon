@@ -4,8 +4,24 @@ Have you every needed to drag and drop something but then realised that you have
 to open a /shudders/ non emacs file manger? Well no more! This package adds
 bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in emacs a little more!
 
-** How does it work?
-*** Source commands
+** Table of Contense :toc_3:
+- [[#commands][Commands]]
+  - [[#source-commands][Source commands]]
+  - [[#sink-commands][Sink commands]]
+-  [[#installation][Installation]]
+  - [[#straight][Straight]]
+  - [[#doom][Doom]]
+- [[#configuring][Configuring]]
+  - [[#variables][Variables]]
+  - [[#some-pre-made-configurations][Some pre made configurations]]
+    - [[#doom-emacs][Doom emacs]]
+    - [[#vanilla][Vanilla]]
+- [[#known-bugs][Known Bugs]]
+    - [[#the-file-will-not-open-if-there-are-spaces-in-the-name][The file will not open if there are spaces in the name.]]
+- [[#contributing][Contributing.]]
+
+* Commands
+** Source commands
 you mark the file like normal (using =m=) and call one of these commands
 (flags are what I use for dragon) it will also work if you are sort of on the
 file
@@ -15,7 +31,7 @@ file
 | ~dired-dragon-stay~         | sticks around but dumps all the files         | =-a=    |
 | ~dired-dragon-individual~   | you can individually drag and drop the files  |         |
 
-*** TODO Sink commands
+** TODO Sink commands
 | commands                    | use                                           | flags   |
 |-----------------------------+-----------------------------------------------+---------|
 | ~dired-dragon-take-in~      | TODO drop files into the current dired buffer | =-t -x= |
@@ -23,18 +39,19 @@ file
 
 I recommend binding them unless you are a =M-x= god
 #+begin_src emacs-lisp
-(define-key dired-mode-map (kbd "C-d d" #'dired-dragon))
-(define-key dired-mode-map (kbd "C-d s" #'dired-dragon-stay))
-(define-key dired-mode-map (kbd "C-d i" #'dired-dragon-individual))
+(define-key dired-mode-map (kbd "C-d d") #'dired-dragon)
+(define-key dired-mode-map (kbd "C-d s") #'dired-dragon-stay)
+(define-key dired-mode-map (kbd "C-d i") #'dired-dragon-individual)
 #+end_src
-**  Installation
-*** straight
+
+*  Installation
+** Straight
 #+begin_src emacs-lisp
 (use-package dired-dragon
   :straight (:host github
              :repo "jeetelongname/dired-dragon"))
 #+end_src
-*** Doom
+** Doom
 #+begin_src emacs-lisp
 ;; packages.el
 (package! :recipe (:host github
@@ -43,11 +60,49 @@ I recommend binding them unless you are a =M-x= god
 (use-package! dired-dragon)
 #+end_src
 
-** Known Bugs
-+ TODO The file will not open if there are spaces in the name.
+* Configuring
+** Variables
+if you are on a distro that names dragon differently then you can change the
+variable ~dired-dragon-location~ to the name and or location of your choice
+#+begin_src emacs-lisp
+(setq dired-dragon-location (executable-find "YOUR-NAME-HERE"))
+;; using executable find is a little better as it does not hard code the location
+;; but this is optional, just provide it with a full path (eg /usr/bin/dragon)
+#+end_src
+
+** Some pre made configurations
+*** Doom emacs
+if you are a doom emacs user (like me) then this snippet will help
+#+begin_src emacs-lisp
+;; config.el
+(use-package! dired-dragon
+  :after dired
+  :config
+  (map! :map dired-mode-map
+        (:prefix "C-d"
+         :n "d" #'dired-dragon
+         :n "s" #'dired-dragon-stay
+         :n "i" #'dired-dragon-individual)))
+#+end_src
+
+*** Vanilla
+this should be a copy and paste affair but I don't use vanilla extensively
+#+begin_src emacs-lisp
+(use-package dired-dragon
+  :straight (:host github
+             :repo "jeetelongname/dired-dragon")
+  :bind (:map dired-mode-map
+         ("C-d d" . dired-dragon)
+         ("C-d s" . dired-dragon-stay)
+         ("C-d i" . dired-dragon-individual)))
+#+end_src
+
+
+* Known Bugs
+*** TODO The file will not open if there are spaces in the name.
   yeah this is not ideal and a me issue (not a dragon issue) if this is still
   here then I have forgotten about this entry or its not fixed.
 
-** Contributing.
+* Contributing.
 [[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. This is my first "formal" package so
 any pointers would be appreciated
