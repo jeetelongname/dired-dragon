@@ -17,17 +17,12 @@
 
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
-
 ;;; Commentary:
-
-;; provies dragon bindings so that you can select files and drag them into whatever you want. here be dragons
-
+;; Provies dragon bindings so that you can select files and drag them into whatever you want. here be dragons
 ;; 1 Commands
 ;; ==========
-
 ;; 1.1 Dired commands
 ;; ~~~~~~~~~~~~~~~~~~
-
 ;;   you mark the file like normal (using `m') and call one of these
 ;;   commands (flags are what I use for dragon) it will also work if you
 ;;   are sort of on the file
@@ -36,18 +31,14 @@
 ;;    `dired-dragon'             dumps all the files and exits once done       `-x -a'
 ;;    `dired-dragon-stay'        sticks around but dumps all the files         `-a'
 ;;    `dired-dragon-individual'  you can individually drag and drop the files
-
 ;;   I recommend binding them unless you are a `M-x' wizard
 ;;   ,----
 ;;   | (define-key dired-mode-map (kbd "C-d d") #'dired-dragon)
 ;;   | (define-key dired-mode-map (kbd "C-d s") #'dired-dragon-stay)
 ;;   | (define-key dired-mode-map (kbd "C-d i") #'dired-dragon-individual)
 ;;   `----
-
-
 ;; 1.2 In file commands
 ;; ~~~~~~~~~~~~~~~~~~~~
-
 ;;   these commands are the original work of @ymarco. Thanks! They open
 ;;   up a dired instance for the current file unless its an org or tex
 ;;   file. then it will check for a coresponding .pdf file and drag that
@@ -56,14 +47,10 @@
 ;;   ------------------------------------------------------------------------------------------------------------
 ;;    `:drag'                             an evil ex command to drag the current buffer and quit  `-x'  *evil*
 ;;    TODO `dired-dragon-current-buffer'  a vanilla version of the `:drag' command                `-x'  Nothing
-
-
 ;; 3 Configuring
 ;; =============
-
 ;; 3.1 Variables
 ;; ~~~~~~~~~~~~~
-
 ;;   if you are on a distro that names dragon differently then you can
 ;;   change the variable `dired-dragon-location' to the name and or
 ;;   location of your choice
