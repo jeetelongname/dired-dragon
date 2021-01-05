@@ -24,7 +24,6 @@
 
 ;;; Code:
 
-
 (defgroup dired-dragon ()
   "Dired dragon customise group."
   :group 'convenience)
@@ -34,44 +33,39 @@
 
 (defvar dired-dragon--buffer "*dragon*")
 
-(defun dired-dragon--core ()
-  "This is most of the core logic for dired-dragon."
-  (concat dired-dragon-location
-          (dired-dragon--strip-parens
-           (format " %s"  (dired-get-marked-files)))))
 
 (defun dired-dragon--strip-parens (s)
   "Strip parens from a string using regex find and replace.
 takes argument S. Its a bit crude but it works"
   (replace-regexp-in-string "(" "" (replace-regexp-in-string ")" "" s)))
 
+(defun dired-dragon--core (name &optional flags)
+  "This is most of the core logic for dired-dragon. Takes the arg NAME and the optional arg of FLAGS."
+  (start-process-shell-command
+   name
+   dired-dragon--buffer
+   (concat dired-dragon-location
+          (dired-dragon--strip-parens
+           (format " %s"  (dired-get-marked-files))) flags)))
+
 ;;;###autoload
 (defun dired-dragon ()
   "The Default. will drag all items selected and exit once done.
 its my biggest uscase"
   (interactive)
-  (start-process-shell-command
-   "dragon" dired-dragon--buffer (concat (dired-dragon--core) " -x -a")))
+  (dired-dragon--core "dragon" " -x -a"))
 
 ;;;###autoload
 (defun dired-dragon-stay ()
-  "If you have a lot of dragging and dropping to do.
-it will stick around but will still drop all of them"
+  "Drag multiple files to the same source but don't exit after the first drop."
   (interactive)
-  (start-process-shell-command
-   "dragon-stay" dired-dragon--buffer (concat (dired-dragon--core) " -a")))
+  (dired-dragon--core "dragon-stay" " -a"))
 
 ;;;###autoload
 (defun dired-dragon-individual ()
-  "Something."
+  "Mark multiple files and drag them individually."
   (interactive)
-  (start-process-shell-command
-   "dragon-individual" dired-dragon--buffer (dired-dragon--core)))
+  (dired-dragon--core "dragon-individual"))
 
-;; TODO
-;; (defun dired-dragon-take-in ())
-
-;;TODO
-;; (defun dired-dragon-take-in-stay ())
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
