@@ -72,6 +72,7 @@ its my biggest uscase"
   (interactive)
   (dired-dragon--core "dragon-individual"))
 
+;;; non dired commands
 ;;;###autoload
 (when (require 'evil nil 'noerror)
   (evil-define-command dragon-drag-file (file)
@@ -79,7 +80,7 @@ its my biggest uscase"
 With FILE, use that file instead. If FILE not specified and the
 buffer is org/tex and a corresponding pdf exists, drag that pdf."
     (interactive "<f>")
-    (start-process "dragon-evil" dired-dragon-buffer
+    (start-process "dragon-current-file" dired-dragon-buffer
                    "dragon"
                    (or file
                        (and (eq major-mode 'dired-mode)
@@ -93,5 +94,19 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
                    "-x"))
   (evil-ex-define-cmd "drag" #'dragon-drag-file))
 
+;; TODO needs some work to port to vanilla
+(defun dired-dragon-current-buffer ()
+  "Open dragon for the current file."
+  (interactive)
+  (start-process "dragon-evil" dired-dragon-buffer
+                   "dragon"
+                   (or file (and (eq major-mode 'dired-mode) (dired-get-filename))
+                       (let ((file (file-name-extension (buffer-file-name))))
+                         (and (or (eq major-mode 'org-mode)
+                                  (eq major-mode 'latex-mode))
+                              (file-exists-p file)
+                              file))
+                       (buffer-file-name))
+                   "-x"))
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here

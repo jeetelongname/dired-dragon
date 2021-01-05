@@ -11,6 +11,8 @@ functionality for that. its a "why add in an extra step sort of thing"
 
 ** Table of Contense :toc_3:
 - [[#commands][Commands]]
+  - [[#dired-commands][Dired commands]]
+  - [[#in-file-commands][In file commands]]
 -  [[#installation][Installation]]
   - [[#straight][Straight]]
   - [[#doom][Doom]]
@@ -24,14 +26,15 @@ functionality for that. its a "why add in an extra step sort of thing"
 - [[#contributing][Contributing.]]
 
 * Commands
+** Dired commands
 you mark the file like normal (using =m=) and call one of these commands
 (flags are what I use for dragon) it will also work if you are sort of on the
 file
-| Command                     | Use                                           | flags   |
-|-----------------------------+-----------------------------------------------+---------|
-| ~dired-dragon~              | dumps all the files and exits once done       | =-x -a= |
-| ~dired-dragon-stay~         | sticks around but dumps all the files         | =-a=    |
-| ~dired-dragon-individual~   | you can individually drag and drop the files  |         |
+| Command                   | Use                                          | flags   |
+|---------------------------+----------------------------------------------+---------|
+| ~dired-dragon~            | dumps all the files and exits once done      | =-x -a= |
+| ~dired-dragon-stay~       | sticks around but dumps all the files        | =-a=    |
+| ~dired-dragon-individual~ | you can individually drag and drop the files |         |
 
 I recommend binding them unless you are a =M-x= wizard
 #+begin_src emacs-lisp
@@ -40,6 +43,14 @@ I recommend binding them unless you are a =M-x= wizard
 (define-key dired-mode-map (kbd "C-d i") #'dired-dragon-individual)
 #+end_src
 
+** In file commands
+these commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
+They open up a dired instance for the current file unless its an org or tex
+file. then it will check for a coresponding .pdf file and drag that instead
+| Commands                           | use                                                    | flag | requires |
+|------------------------------------+--------------------------------------------------------+------+----------|
+| =:drag=                            | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
+| TODO ~dired-dragon-current-buffer~ | a vanilla version of the =:drag= command               | =-x= | Nothing  |
 *  Installation
 ** Straight
 #+begin_src emacs-lisp
