@@ -4,10 +4,13 @@ Have you every needed to drag and drop something but then realised that you have
 to open a /shudders/ non emacs file manger? Well no more! This package adds
 bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in emacs a little more!
 
+#+begin_quote
+Do note that dired already acts like a sink in normal use so I won't add dragon
+functionality for that. its a "why add in an extra step sort of thing"
+#+end_quote
+
 ** Table of Contense :toc_3:
 - [[#commands][Commands]]
-  - [[#source-commands][Source commands]]
-  - [[#sink-commands][Sink commands]]
 -  [[#installation][Installation]]
   - [[#straight][Straight]]
   - [[#doom][Doom]]
@@ -21,7 +24,6 @@ bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in e
 - [[#contributing][Contributing.]]
 
 * Commands
-** Source commands
 you mark the file like normal (using =m=) and call one of these commands
 (flags are what I use for dragon) it will also work if you are sort of on the
 file
@@ -31,13 +33,7 @@ file
 | ~dired-dragon-stay~         | sticks around but dumps all the files         | =-a=    |
 | ~dired-dragon-individual~   | you can individually drag and drop the files  |         |
 
-** TODO Sink commands
-| commands                    | use                                           | flags   |
-|-----------------------------+-----------------------------------------------+---------|
-| ~dired-dragon-take-in~      | TODO drop files into the current dired buffer | =-t -x= |
-| ~dired-dragon-take-in-stay~ | TODO same as above but it will stick around   | =-t=    |
-
-I recommend binding them unless you are a =M-x= god
+I recommend binding them unless you are a =M-x= wizard
 #+begin_src emacs-lisp
 (define-key dired-mode-map (kbd "C-d d") #'dired-dragon)
 (define-key dired-mode-map (kbd "C-d s") #'dired-dragon-stay)
