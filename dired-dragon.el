@@ -28,10 +28,15 @@
   "Dired dragon customise group."
   :group 'convenience)
 
-(defvar dired-dragon-location (executable-find "dragon")
-  "The location of dragon. may need changing depending on what dragon is called.")
+(defcustom dired-dragon-location (executable-find "dragon")
+  "The location of dragon. may need changing depending on what dragon is called."
+  :type 'string
+  :group 'dired-dragon)
 
-(defvar dired-dragon--buffer "*dragon*")
+(defcustom dired-dragon-buffer "*dragon*"
+  "Buffer that dired dragon will output too."
+  :type 'string
+  :group 'dired-dragon)
 
 
 (defun dired-dragon--strip-parens (s)
@@ -43,10 +48,10 @@ takes argument S. Its a bit crude but it works"
   "This is most of the core logic for dired-dragon. Takes the arg NAME and the optional arg of FLAGS."
   (start-process-shell-command
    name
-   dired-dragon--buffer
+   dired-dragon-buffer
    (concat dired-dragon-location
-          (dired-dragon--strip-parens
-           (format " %s"  (dired-get-marked-files))) flags)))
+           (dired-dragon--strip-parens
+            (format " %s"  (dired-get-marked-files))) flags)))
 
 ;;;###autoload
 (defun dired-dragon ()
@@ -66,6 +71,27 @@ its my biggest uscase"
   "Mark multiple files and drag them individually."
   (interactive)
   (dired-dragon--core "dragon-individual"))
+
+;;;###autoload
+(when (require 'evil nil 'noerror)
+  (evil-define-command dragon-drag-file (file)
+    "Open a drag window with dragon for the file opened in the current buffer.
+With FILE, use that file instead. If FILE not specified and the
+buffer is org/tex and a corresponding pdf exists, drag that pdf."
+    (interactive "<f>")
+    (start-process "dragon-evil" dired-dragon-buffer
+                   "dragon"
+                   (or file
+                       (and (eq major-mode 'dired-mode)
+                            (dired-get-filename))
+                       (let ((file (file-name-extension (buffer-file-name))))
+                         (and (or (eq major-mode 'org-mode)
+                                  (eq major-mode 'latex-mode))
+                              (file-exists-p file)
+                              file))
+                       (buffer-file-name))
+                   "-x"))
+  (evil-ex-define-cmd "drag" #'dragon-drag-file))
 
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
