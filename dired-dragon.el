@@ -107,13 +107,12 @@ its my biggest uscase"
   (dired-dragon--core "dragon-individual"))
 
 ;;; non dired commands
-
 ;;;###autoload
 (defun dired-dragon-drag-file (file)
   "Open a drag window with dragon for the file opened in the current buffer.
 With FILE, use that file instead. If FILE not specified and the
 buffer is org/tex and a corresponding pdf exists, drag that pdf."
-  (interactive "f")
+  (interactive "F")
   (start-process "dragon-current-file" dired-dragon-buffer
                  dired-dragon-location
                  (or file
@@ -128,7 +127,7 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
                  "-x"))
 
 (with-eval-after-load 'evil
-  (evil-set-command-properties 'dired-dragon-drag-file '(:repeat t :ex-arg file))
+  (evil-set-command-properties #'dired-dragon-drag-file '(:repeat nil :ex-arg file) #'dired-dragon-drag-file)
   (evil-ex-define-cmd "drag" #'dired-dragon-drag-file))
 
 (provide 'dired-dragon)
