@@ -61,6 +61,8 @@
 ;;   `----
 ;;; Code:
 
+(require 'evil nil 'noerror)
+
 (defgroup dired-dragon ()
   "Dired dragon customise group."
   :group 'convenience)
@@ -110,39 +112,40 @@ its my biggest uscase"
   (dired-dragon--core "dragon-individual"))
 
 ;;; non dired commands
-(when (require 'evil nil 'noerror)
-  (evil-define-command dragon-drag-file (file)
-    "Open a drag window with dragon for the file opened in the current buffer.
+
+;;;###autoload
+(evil-define-command dragon-drag-file (file)
+  "Open a drag window with dragon for the file opened in the current buffer.
 With FILE, use that file instead. If FILE not specified and the
 buffer is org/tex and a corresponding pdf exists, drag that pdf."
-    (interactive "<f>")
-    (start-process "dragon-current-file" dired-dragon-buffer
-                   "dragon"
-                   (or file
-                       (and (eq major-mode 'dired-mode)
-                            (dired-get-filename))
-                       (let ((file (file-name-extension (buffer-file-name))))
-                         (and (or (eq major-mode 'org-mode)
-                                  (eq major-mode 'latex-mode))
-                              (file-exists-p file)
-                              file))
-                       (buffer-file-name))
-                   "-x"))
-  (evil-ex-define-cmd "drag" #'dragon-drag-file))
-
+  (interactive "<f>")
+  (start-process "dragon-current-file" dired-dragon-buffer
+                 "dragon"
+                 (or file
+                     (and (eq major-mode 'dired-mode)
+                          (dired-get-filename))
+                     (let ((file (file-name-extension (buffer-file-name))))
+                       (and (or (eq major-mode 'org-mode)
+                                (eq major-mode 'latex-mode))
+                            (file-exists-p file)
+                            file))
+                     (buffer-file-name))
+                 "-x"))
+(evil-ex-define-cmd "drag" #'dragon-drag-file)
 ;; TODO needs some work to port to vanilla
 (defun dired-dragon-current-buffer (file)
   "Open dragon for the current file. Takes arg FILE."
   (interactive "f")
   (start-process "dragon-evil" dired-dragon-buffer
-                   "dragon"
-                   (or file (and (eq major-mode 'dired-mode) (dired-get-filename))
-                       (let ((file (file-name-extension (buffer-file-name))))
-                         (and (or (eq major-mode 'org-mode)
-                                  (eq major-mode 'latex-mode))
-                              (file-exists-p file)
-                              file))
-                       (buffer-file-name))
-                   "-x"))
+                 "dragon"
+                 (or file (and (eq major-mode 'dired-mode) (dired-get-filename))
+                     (let ((file (file-name-extension (buffer-file-name))))
+                       (and (or (eq major-mode 'org-mode)
+                                (eq major-mode 'latex-mode))
+                            (file-exists-p file)
+                            file))
+                     (buffer-file-name))
+                 "-x"))
+
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
