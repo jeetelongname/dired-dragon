@@ -18,7 +18,7 @@
 ;; You should have received a copy of the GNU General Public License
 ;; along with this program.  If not, see <https://www.gnu.org/licenses/>.
 ;;; Commentary:
-;; Provies dragon bindings so that you can select files and drag them into whatever you want. here be dragons
+;; provies dragon bindings so that you can select files and drag them into whatever you want. here be dragons
 ;; 1 Commands
 ;; ==========
 ;; 1.1 Dired commands
@@ -110,7 +110,6 @@ its my biggest uscase"
   (dired-dragon--core "dragon-individual"))
 
 ;;; non dired commands
-;;;###autoload
 (when (require 'evil nil 'noerror)
   (evil-define-command dragon-drag-file (file)
     "Open a drag window with dragon for the file opened in the current buffer.
@@ -132,9 +131,9 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
   (evil-ex-define-cmd "drag" #'dragon-drag-file))
 
 ;; TODO needs some work to port to vanilla
-(defun dired-dragon-current-buffer ()
-  "Open dragon for the current file."
-  (interactive)
+(defun dired-dragon-current-buffer (file)
+  "Open dragon for the current file. Takes arg FILE."
+  (interactive "f")
   (start-process "dragon-evil" dired-dragon-buffer
                    "dragon"
                    (or file (and (eq major-mode 'dired-mode) (dired-get-filename))
