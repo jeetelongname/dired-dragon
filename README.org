@@ -43,14 +43,17 @@ I recommend binding them unless you are a =M-x= wizard
 (define-key dired-mode-map (kbd "C-d i") #'dired-dragon-individual)
 #+end_src
 
-** In file commands
+** TODO In file commands
 these commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
 They open up a dired instance for the current file unless its an org or tex
-file. then it will check for a coresponding .pdf file and drag that instead
-| Commands                           | use                                                    | flag | requires |
-|------------------------------------+--------------------------------------------------------+------+----------|
-| =:drag=                            | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
-| TODO ~dired-dragon-current-buffer~ | a vanilla version of the =:drag= command               | =-x= | Nothing  |
+file. then it will check for a corresponding pdf file and drag that instead
+
+At the moment it just asks you to select the file. it needs some work
+| Commands                         | use                                                    | flag | requires |
+|----------------------------------+--------------------------------------------------------+------+----------|
+| =:drag=                          | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
+| TODO ~dired-dragon-current-file~ | a vanilla version of the =:drag= command               | =-x= | Nothing  |
+
 *  Installation
 ** Straight
 #+begin_src emacs-lisp
