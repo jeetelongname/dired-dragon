@@ -70,7 +70,7 @@
   :group 'dired-dragon)
 
 (defcustom dired-dragon-buffer "*dragon*"
-  "Buffer that dired dragon will output too."
+  "Buffer name that dired dragon will output too."
   :type 'string
   :group 'dired-dragon)
 
@@ -81,24 +81,28 @@ takes argument S. Its a bit crude but it works"
   (replace-regexp-in-string "(" "" (replace-regexp-in-string ")" "" s)))
 
 (defun dired-dragon--core (name &optional flags)
-  "This is most of the core logic for dired-dragon. Takes the arg NAME and the optional arg of FLAGS."
-  (start-process-shell-command name dired-dragon-buffer
-                               (concat dired-dragon-location
-                                       (dired-dragon--strip-parens
-                                        (format " %s"  (dired-get-marked-files))) flags)))
+  "The Core logic that most of the commands are based off of.
+Takes the NAME argument as the process name and an &optional FLAGS argument."
+  (start-process-shell-command
+   name
+   dired-dragon-buffer
+   (concat
+    dired-dragon-location
+    (dired-dragon--strip-parens (format " %s"  (dired-get-marked-files)))
+    (format " %s" flags))))
 
 ;;;###autoload
 (defun dired-dragon ()
   "The Default. will drag all items selected and exit once done.
 its my biggest uscase"
   (interactive)
-  (dired-dragon--core "dragon" " -x -a"))
+  (dired-dragon--core "dragon" "-x -a"))
 
 ;;;###autoload
 (defun dired-dragon-stay ()
   "Drag multiple files to the same source but don't exit after the first drop."
   (interactive)
-  (dired-dragon--core "dragon-stay" " -a"))
+  (dired-dragon--core "dragon-stay" "-a"))
 
 ;;;###autoload
 (defun dired-dragon-individual ()
@@ -108,26 +112,24 @@ its my biggest uscase"
 
 ;;; non dired commands
 ;;;###autoload
-(defun dired-dragon-drag-file (file)
+(defun dired-dragon-drag-file ()
   "Open a drag window with dragon for the file opened in the current buffer.
 With FILE, use that file instead. If FILE not specified and the
 buffer is org/tex and a corresponding pdf exists, drag that pdf."
-  (interactive "f")
+  (interactive)
   (start-process-shell-command "dragon-current-file" dired-dragon-buffer
                                (concat dired-dragon-location
-                                       (or file
-
-                                           (and (eq major-mode 'dired-mode)
-                                                (dired-get-filename))
-
-                                           (let ((file (file-name-extension (buffer-file-name))))
-                                             (and (or (eq major-mode 'org-mode)
-                                                      (eq major-mode 'latex-mode))
-                                                  (file-exists-p file)
-                                                  file))
-
-                                           (buffer-file-name))
-                                       "-x")))
+                                       (format " %s"
+                                               (or
+                                                (and (eq major-mode 'dired-mode)
+                                                     (dired-get-filename))
+                                                (let ((file (file-name-extension (buffer-file-name)))):
+                                                  (and (or (eq major-mode 'org-mode)
+                                                           (eq major-mode 'latex-mode))
+                                                       (file-exists-p file)
+                                                       file))
+                                                (buffer-file-name)))
+                                       " -x")))
 ;;;###autoload
 (with-eval-after-load 'evil
   (evil-set-command-properties #'dired-dragon-drag-file '(:repeat t :ex-arg file) #'dired-dragon-drag-file)
@@ -152,5 +154,6 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
 ;;                      (buffer-file-name))
 ;;                  "-x"))
 ;; (evil-ex-define-cmd "dragf" #'+evil:drag-file)
+;;
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here

@@ -10,8 +10,6 @@ functionality for that. its a "why add in an extra step sort of thing"
 #+end_quote
 
 ** Table of Contense :toc_3:
-- [[#commands][Commands]]
-  - [[#dired-commands][Dired commands]]
   - [[#in-file-commands][In file commands]]
 -  [[#installation][Installation]]
   - [[#straight][Straight]]
@@ -25,34 +23,16 @@ functionality for that. its a "why add in an extra step sort of thing"
     - [[#the-file-will-not-open-if-there-are-spaces-in-the-name][The file will not open if there are spaces in the name.]]
 - [[#contributing][Contributing.]]
 
-* Commands
-** Dired commands
-you mark the file like normal (using =m=) and call one of these commands
-(flags are what I use for dragon) it will also work if you are sort of on the
-file
-| Command                   | Use                                          | flags   |
-|---------------------------+----------------------------------------------+---------|
-| ~dired-dragon~            | dumps all the files and exits once done      | =-x -a= |
-| ~dired-dragon-stay~       | sticks around but dumps all the files        | =-a=    |
-| ~dired-dragon-individual~ | you can individually drag and drop the files |         |
-
-I recommend binding them unless you are a =M-x= wizard
-#+begin_src emacs-lisp
-(define-key dired-mode-map (kbd "C-d d") #'dired-dragon)
-(define-key dired-mode-map (kbd "C-d s") #'dired-dragon-stay)
-(define-key dired-mode-map (kbd "C-d i") #'dired-dragon-individual)
-#+end_src
-
 ** TODO In file commands
 these commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
-They open up a dired instance for the current file unless its an org or tex
+They open up a dragon instance for the current file unless its an org or tex
 file. then it will check for a corresponding pdf file and drag that instead
 
-At the moment it just asks you to select the file. it needs some work
+At
 | Commands                         | use                                                    | flag | requires |
 |----------------------------------+--------------------------------------------------------+------+----------|
 | =:drag=                          | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
-| TODO ~dired-dragon-current-file~ | a vanilla version of the =:drag= command               | =-x= | Nothing  |
+| ~dired-dragon-current-file~      | a vanilla version of the =:drag= command               | =-x= | Nothing  |
 
 *  Installation
 ** Straight
@@ -72,10 +52,10 @@ At the moment it just asks you to select the file. it needs some work
 
 * Configuring
 ** Variables
-if you are on a distro that names dragon differently then you can change the
+if you are on a distro that names dragon differently /cough arch/ then you can change the
 variable ~dired-dragon-location~ to the name and or location of your choice
 #+begin_src emacs-lisp
-(setq dired-dragon-location (executable-find "YOUR-NAME-HERE"))
+(setq dired-dragon-location (executable-find "the name of the executable"))
 ;; using executable find is a little better as it does not hard code the location
 ;; but this is optional, just provide it with a full path (eg /usr/bin/dragon)
 #+end_src
@@ -89,7 +69,7 @@ if you are a doom emacs user (like me) then this snippet will help
   :after dired
   :config
   (map! :map dired-mode-map
-        (:prefix "C-d"
+        (:prefix "C-d" ;; I don't use `C-d' all to much in dired thus the remap
          :n "d" #'dired-dragon
          :n "s" #'dired-dragon-stay
          :n "i" #'dired-dragon-individual)))
