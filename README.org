@@ -1,50 +1,50 @@
 #+TITLE: dragon bindings for dired
 
 Have you every needed to drag and drop something but then realised that you have
-to open a /shudders/ non emacs file manger? Well no more! This package adds
-bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in emacs a little more!
+to open a /shudders/ non-Emacs file manger? Well not anymore! This package adds
+bindings for [[https://github.com/mwh/dragon][dragon]] so that you can live in Emacs a little more!
 
 #+begin_quote
 Do note that dired already acts like a sink in normal use so I won't add dragon
-functionality for that. its a "why add in an extra step sort of thing"
+functionality for that. It's a "why add an extra step" sort of thing.
 #+end_quote
 
-** Table of Contense :toc_3:
-  - [[#in-file-commands][In file commands]]
-  - [[#in-dired-commands][In Dired commands]]
+** Table of Contents :toc_3:
+  - [[#in-file-commands][In-File Commands]]
+  - [[#in-dired-commands][In-Dired Commands]]
 -  [[#installation][Installation]]
   - [[#straight][Straight]]
   - [[#doom][Doom]]
 - [[#configuring][Configuring]]
   - [[#variables][Variables]]
-  - [[#some-pre-made-configurations][Some pre made configurations]]
-    - [[#doom-emacs][Doom emacs]]
+  - [[#some-pre-made-configurations][Some pre-made configurations]]
+    - [[#doom-emacs][Doom Emacs]]
     - [[#vanilla][Vanilla]]
 - [[#known-bugs][Known Bugs]]
     - [[#the-file-will-not-open-if-there-are-spaces-in-the-name][The file will not open if there are spaces in the name.]]
-- [[#contributing][Contributing.]]
+- [[#contributing][Contributing]]
 
-** TODO In file commands
-these commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
+** TODO In-File Commands
+These commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
 They open up a dragon instance for the current file +unless its an org or tex+
 +file. then it will check for a corresponding pdf file and drag that instead+
 that is still a work in progress. You can still use the command but it will just
 drag the current file
 
 At
-| Commands                  | use                                                    | flag | requires |
-|---------------------------+--------------------------------------------------------+------+----------|
-| =:drag=                     | an evil ex command to drag the current buffer and quit | =-x=   | *evil*     |
-| ~dired-dragon-current-file~ | a vanilla version of the =:drag= command                 | =-x=   | Nothing  |
+| Command                     | Use                                                    | Flag | Requires |
+|-----------------------------+--------------------------------------------------------+------+----------|
+| =:drag=                     | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
+| ~dired-dragon-current-file~ | a vanilla version of the =:drag= command               | =-x= | Nothing  |
 
 
-** In Dired commands
+** In-Dired Commands
 These commands are meant to be used in dired.
-| Commands                | use                                                                            | flag(s) |
-|-------------------------+--------------------------------------------------------------------------------+---------|
-| ~dired-dragon~            | The Default, drags all and closes after one drop                               | =-x -a=   |
+| Commands                  | Use                                                                            | Flag(s) |
+|---------------------------+--------------------------------------------------------------------------------+---------|
+| ~dired-dragon~            | The Default, drags all and closes after one drop                               | =-x -a= |
 | ~dired-dragon-individual~ | window stays open and you can drag all the files                               |         |
-| ~dired-dragon-stay~       | All files will be dropped into the same place but the window will stick around | =-a=      |
+| ~dired-dragon-stay~       | All files will be dropped into the same place but the window will stick around | =-a=    |
 
 *  Installation
 ** Straight
@@ -72,9 +72,9 @@ variable ~dired-dragon-location~ to the name and or location of your choice
 ;; but this is optional, just provide it with a full path (eg /usr/bin/dragon)
 #+end_src
 
-** Some pre made configurations
-*** Doom emacs
-if you are a doom emacs user (like me) then this snippet will help
+** Some pre-made configurations
+*** Doom Emacs
+If you are a doom emacs user (like me) then this snippet will help
 #+begin_src emacs-lisp
 ;; config.el
 (use-package! dired-dragon
@@ -88,7 +88,7 @@ if you are a doom emacs user (like me) then this snippet will help
 #+end_src
 
 *** Vanilla
-this should be a copy and paste affair but I don't use vanilla extensively
+This should be a copy and paste affair but I don't use vanilla extensively
 #+begin_src emacs-lisp
 (use-package dired-dragon
   :straight (:host github
@@ -112,6 +112,6 @@ this should be a copy and paste affair but I don't use vanilla extensively
   yeah this is not ideal and a me issue (not a dragon issue) if this is still
   here then I have forgotten about this entry or its not fixed.
 
-* Contributing.
+* Contributing
 [[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. This is my first "formal" package so
 any pointers would be appreciated
