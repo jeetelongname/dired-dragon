@@ -124,10 +124,10 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
                                                 (and (eq major-mode 'dired-mode)
                                                      (dired-get-filename))
                                                 (let ((file (file-name-extension (buffer-file-name)))):
-                                                  (and (or (eq major-mode 'org-mode)
-                                                           (eq major-mode 'latex-mode))
-                                                       (file-exists-p file)
-                                                       file))
+                                                     (and (or (eq major-mode 'org-mode)
+                                                              (eq major-mode 'latex-mode))
+                                                          (file-exists-p file)
+                                                          file))
                                                 (buffer-file-name)))
                                        " -x")))
 ;;;###autoload
@@ -135,25 +135,5 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
   (evil-set-command-properties #'dired-dragon-drag-file '(:repeat t :ex-arg file) #'dired-dragon-drag-file)
   (evil-ex-define-cmd "drag" #'dired-dragon-drag-file))
 
-;; (evil-define-command +evil:drag-file (file) ;; precursor to the command
-;;   "Open a drag window with dragon for the file opened in the current buffer.
-;; With FILE, use that file instead. If FILE not specified and the
-;; buffer is org/tex and a corresponding pdf exists, drag that pdf."
-;;   (interactive "<f>")
-;;   (start-process "dragon-from-emacs"
-;;                  nil
-;;                  "dragon"
-;;                  (or file
-;;                      (and (eq major-mode 'dired-mode)
-;;                           (dired-get-filename))
-;;                      (let ((file (file-name-extension (buffer-file-name))))
-;;                        (and (or (eq major-mode 'org-mode)
-;;                                 (eq major-mode 'latex-mode))
-;;                             (file-exists-p file)
-;;                             file))
-;;                      (buffer-file-name))
-;;                  "-x"))
-;; (evil-ex-define-cmd "dragf" #'+evil:drag-file)
-;;
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
