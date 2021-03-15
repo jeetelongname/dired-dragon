@@ -11,6 +11,7 @@ functionality for that. its a "why add in an extra step sort of thing"
 
 ** Table of Contense :toc_3:
   - [[#in-file-commands][In file commands]]
+  - [[#in-dired-commands][In Dired commands]]
 -  [[#installation][Installation]]
   - [[#straight][Straight]]
   - [[#doom][Doom]]
@@ -25,14 +26,25 @@ functionality for that. its a "why add in an extra step sort of thing"
 
 ** TODO In file commands
 these commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
-They open up a dragon instance for the current file unless its an org or tex
-file. then it will check for a corresponding pdf file and drag that instead
+They open up a dragon instance for the current file +unless its an org or tex+
++file. then it will check for a corresponding pdf file and drag that instead+
+that is still a work in progress. You can still use the command but it will just
+drag the current file
 
 At
-| Commands                         | use                                                    | flag | requires |
-|----------------------------------+--------------------------------------------------------+------+----------|
-| =:drag=                          | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
-| ~dired-dragon-current-file~      | a vanilla version of the =:drag= command               | =-x= | Nothing  |
+| Commands                  | use                                                    | flag | requires |
+|---------------------------+--------------------------------------------------------+------+----------|
+| =:drag=                     | an evil ex command to drag the current buffer and quit | =-x=   | *evil*     |
+| ~dired-dragon-current-file~ | a vanilla version of the =:drag= command                 | =-x=   | Nothing  |
+
+
+** In Dired commands
+These commands are meant to be used in dired.
+| Commands                | use                                                                            | flag(s) |
+|-------------------------+--------------------------------------------------------------------------------+---------|
+| ~dired-dragon~            | The Default, drags all and closes after one drop                               | =-x -a=   |
+| ~dired-dragon-individual~ | window stays open and you can drag all the files                               |         |
+| ~dired-dragon-stay~       | All files will be dropped into the same place but the window will stick around | =-a=      |
 
 *  Installation
 ** Straight
@@ -81,10 +93,17 @@ this should be a copy and paste affair but I don't use vanilla extensively
 (use-package dired-dragon
   :straight (:host github
              :repo "jeetelongname/dired-dragon")
+
+  ;; if you use use-package for bindings
   :bind (:map dired-mode-map
          ("C-d d" . dired-dragon)
          ("C-d s" . dired-dragon-stay)
-         ("C-d i" . dired-dragon-individual)))
+         ("C-d i" . dired-dragon-individual))
+
+  ;; if you don't
+  (define-key dired-mode-map (kbd "C-d d") 'dired-dragon)
+  (define-key dired-mode-map (kbd "C-d s") 'dired-dragon-stay)
+  (define-key dired-mode-map (kbd "C-d i") 'dired-dragon-individual))
 #+end_src
 
 
