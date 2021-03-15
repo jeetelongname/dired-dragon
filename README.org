@@ -56,8 +56,8 @@ These commands are meant to be used in dired.
 ** Doom
 #+begin_src emacs-lisp
 ;; packages.el
-(package! :recipe (:host github
-                   :repo "jeetelongname/dired-dragon"))
+(package! dired-dragon :recipe (:host github
+                                :repo "jeetelongname/dired-dragon"))
 ;; config.el
 (use-package! dired-dragon)
 #+end_src
