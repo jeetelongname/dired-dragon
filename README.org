@@ -20,8 +20,6 @@ functionality for that. It's a "why add an extra step" sort of thing.
   - [[#some-pre-made-configurations][Some pre-made configurations]]
     - [[#doom-emacs][Doom Emacs]]
     - [[#vanilla][Vanilla]]
-- [[#known-bugs][Known Bugs]]
-    - [[#the-file-will-not-open-if-there-are-spaces-in-the-name][The file will not open if there are spaces in the name.]]
 - [[#contributing][Contributing]]
 
 ** TODO In-File Commands
@@ -40,11 +38,11 @@ At
 
 ** In-Dired Commands
 These commands are meant to be used in dired.
-| Commands                  | Use                                                                            | Flag(s) |
-|---------------------------+--------------------------------------------------------------------------------+---------|
-| ~dired-dragon~            | The Default, drags all and closes after one drop                               | =-x -a= |
+| Commands                | Use                                                                            | Flag(s) |
+|-------------------------+--------------------------------------------------------------------------------+---------|
+| ~dired-dragon~            | The Default, drags all and closes after one drop                               | =-x -a=   |
 | ~dired-dragon-individual~ | window stays open and you can drag all the files                               |         |
-| ~dired-dragon-stay~       | All files will be dropped into the same place but the window will stick around | =-a=    |
+| ~dired-dragon-stay~       | All files will be dropped into the same place but the window will stick around | =-a=      |
 
 *  Installation
 ** Straight
@@ -106,11 +104,6 @@ This should be a copy and paste affair but I don't use vanilla extensively
   (define-key dired-mode-map (kbd "C-d i") 'dired-dragon-individual))
 #+end_src
 
-
-* Known Bugs
-*** TODO The file will not open if there are spaces in the name.
-  yeah this is not ideal and a me issue (not a dragon issue) if this is still
-  here then I have forgotten about this entry or its not fixed.
 
 * Contributing
 [[https://github.com/jeetelongname/dired-dragon/issues][Issue's]] are welcome! [[https://github.com/jeetelongname/dired-dragon/pulls][Pull requests]] as well. This is my first "formal" package so

@@ -74,11 +74,14 @@
   :type 'string
   :group 'dired-dragon)
 
-
-(defun dired-dragon--strip-parens (s)
-  "Strip parens from a string using regex find and replace.
-takes argument S. Its a bit crude but it works"
-  (replace-regexp-in-string "(" "" (replace-regexp-in-string ")" "" s)))
+(defun dired-dragon--format-files (lst)
+  "Format all marked files LST and return a string."
+  (replace-regexp-in-string "(" ""
+                            (replace-regexp-in-string ")" ""
+                                                      (format " %s"
+                                                              (mapcar
+                                                               (lambda (itm)
+                                                                 (replace-regexp-in-string " " "\\\\ " itm)) lst )))))
 
 (defun dired-dragon--core (name &optional flags)
   "The Core logic that most of the commands are based off of.
@@ -88,7 +91,7 @@ Takes the NAME argument as the process name and an &optional FLAGS argument."
    dired-dragon-buffer
    (concat
     dired-dragon-location
-    (dired-dragon--strip-parens (format " %s"  (dired-get-marked-files)))
+    (dired-dragon--format-files (dired-get-marked-files))
     (format " %s" flags))))
 
 ;;;###autoload
@@ -134,6 +137,11 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf."
 (with-eval-after-load 'evil
   (evil-set-command-properties #'dired-dragon-drag-file '(:repeat t :ex-arg file) #'dired-dragon-drag-file)
   (evil-ex-define-cmd "drag" #'dired-dragon-drag-file))
+
+(defun dired-test ()
+  "Wow."
+  (interactive)
+  (message "%s" (dired-dragon--format-files (dired-get-marked-files))))
 
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
