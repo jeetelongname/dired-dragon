@@ -69,6 +69,11 @@
   :type 'string
   :group 'dired-dragon)
 
+(defcustom dired-dragon-drag-pdf-by-default nil
+  "If set to non nil pdf's will be dragged by default."
+  :type 'boolean
+  :group 'dired-dragon)
+
 (defcustom dired-dragon-buffer "*dragon*"
   "Buffer name that dired dragon will output too."
   :type 'string
@@ -111,9 +116,9 @@ its my biggest uscase"
 ;;; non dired commands
 ;;;###autoload
 (defun dired-dragon-drag-file (arg)
-  "Open a drag window with dragon for the file opened in the current buffer.
-With FILE, use that file instead. If FILE not specified and the
-buffer is org/tex and a corresponding pdf exists, drag that pdf unless `\\[universal-argument]', ARG is given."
+  "Open a dragon instance for current buffer's file.
+If `\\[universal-argument]', ARG is supplied and you are in org / latex mode
+the the corresponding pdf file will be dragged instead."
   (interactive "P")
   (start-process-shell-command "dragon-current-file" dired-dragon-buffer
                                (concat dired-dragon-location
@@ -121,19 +126,21 @@ buffer is org/tex and a corresponding pdf exists, drag that pdf unless `\\[unive
                                                (or
                                                 (and (eq major-mode 'dired-mode)
                                                      (dired-dragon--format-files (dired-get-marked-files)))
-                                                (let* ((file (buffer-file-name))
-                                                       (file-pdf (file-name-with-extension file ".pdf")))
-                                                  (when (and (not arg)
+                                                (let ((file (file-name-with-extension (buffer-file-name) ".pdf")))
+                                                  (when (and (if dired-dragon-drag-pdf-by-default
+                                                                 (not arg)
+                                                               arg)
                                                              (or (eq major-mode 'org-mode)
                                                                  (eq major-mode 'latex-mode))
-                                                             (file-exists-p file-pdf))
-                                                    file-pdf))
+                                                             (file-exists-p file))
+                                                    file))
                                                 (buffer-file-name)))
                                        " -x")))
 ;;;###autoload
 (with-eval-after-load 'evil
   (evil-define-command dired-dragon-ex-drag-file (bang)
-    "Wrapper around `dired-dragon-drag-file' which allows for a bangable :drag command."
+    "Wrapper around `dired-dragon-drag-file' which allows for a bangable :drag command.
+See that command for bangs behavior, which is the same as the universal arguments."
     (interactive "<!>")
     (dired-dragon-drag-file bang))
   (evil-ex-define-cmd "drag" #'dired-dragon-ex-drag-file))
