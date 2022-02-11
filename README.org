@@ -22,17 +22,17 @@ functionality for that. It's a "why add an extra step" sort of thing.
     - [[#vanilla][Vanilla]]
 - [[#contributing][Contributing]]
 
-** TODO In-File Commands
+** In-File Commands
 These commands are the original work of [[https://github.com/ymarco/][@ymarco]]. Thanks!
-They open up a dragon instance for the current file +unless its an org or tex+
-+file. then it will check for a corresponding pdf file and drag that instead+
-that is still a work in progress. You can still use the command but it will just
-drag the current file
+This set of commands allow you to drag the current buffers file or if your in an org / latex
+buffer to drag the corresponding pdf file by applying the ~universal argument~
+or adding a bang to the end of the ex command. This can also be toggled to drag
+the pdf by default if ~dired-dragon-drag-pdf-by-default~ is non nil
 
-At
 | Command                     | Use                                                    | Flag | Requires |
 |-----------------------------+--------------------------------------------------------+------+----------|
 | =:drag=                     | an evil ex command to drag the current buffer and quit | =-x= | *evil*   |
+| =:drag!=                    | the bang equivelent of =:drag=                         | =-x= | *evil*   |
 | ~dired-dragon-current-file~ | a vanilla version of the =:drag= command               | =-x= | Nothing  |
 
 
@@ -49,7 +49,8 @@ These commands are meant to be used in dired.
 #+begin_src emacs-lisp
 (use-package dired-dragon
   :straight (:host github
-             :repo "jeetelongname/dired-dragon"))
+             :repo "jeetelongname/dired-dragon")
+  :after dired)
 #+end_src
 ** Doom
 #+begin_src emacs-lisp
@@ -57,7 +58,8 @@ These commands are meant to be used in dired.
 (package! dired-dragon :recipe (:host github
                                 :repo "jeetelongname/dired-dragon"))
 ;; config.el
-(use-package! dired-dragon)
+(use-package! dired-dragon
+  :after dired)
 #+end_src
 
 * Configuring
@@ -79,7 +81,7 @@ If you are a doom emacs user (like me) then this snippet will help
   :after dired
   :config
   (map! :map dired-mode-map
-        (:prefix "C-d" ;; I don't use `C-d' all to much in dired thus the remap
+        (:prefix "C-s"
          :n "d" #'dired-dragon
          :n "s" #'dired-dragon-stay
          :n "i" #'dired-dragon-individual)))
@@ -91,6 +93,7 @@ This should be a copy and paste affair but I don't use vanilla extensively
 (use-package dired-dragon
   :straight (:host github
              :repo "jeetelongname/dired-dragon")
+  :after dired
 
   ;; if you use use-package for bindings
   :bind (:map dired-mode-map
