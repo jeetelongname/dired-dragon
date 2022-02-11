@@ -110,33 +110,33 @@ its my biggest uscase"
 
 ;;; non dired commands
 ;;;###autoload
-(defun dired-dragon-drag-file ()
+(defun dired-dragon-drag-file (arg)
   "Open a drag window with dragon for the file opened in the current buffer.
 With FILE, use that file instead. If FILE not specified and the
-buffer is org/tex and a corresponding pdf exists, drag that pdf."
-  (interactive)
+buffer is org/tex and a corresponding pdf exists, drag that pdf unless `\\[universal-argument]', ARG is given."
+  (interactive "P")
   (start-process-shell-command "dragon-current-file" dired-dragon-buffer
                                (concat dired-dragon-location
                                        (format " %s"
                                                (or
                                                 (and (eq major-mode 'dired-mode)
-                                                     (dired-get-filename))
-                                                (let ((file (file-name-extension (buffer-file-name)))):
-                                                     (and (or (eq major-mode 'org-mode)
-                                                              (eq major-mode 'latex-mode))
-                                                          (file-exists-p file)
-                                                          file))
+                                                     (dired-dragon--format-files (dired-get-marked-files)))
+                                                (let* ((file (buffer-file-name))
+                                                       (file-pdf (file-name-with-extension file ".pdf")))
+                                                  (when (and (not arg)
+                                                             (or (eq major-mode 'org-mode)
+                                                                 (eq major-mode 'latex-mode))
+                                                             (file-exists-p file-pdf))
+                                                    file-pdf))
                                                 (buffer-file-name)))
                                        " -x")))
 ;;;###autoload
 (with-eval-after-load 'evil
-  (evil-set-command-properties #'dired-dragon-drag-file '(:repeat t :ex-arg file) #'dired-dragon-drag-file)
-  (evil-ex-define-cmd "drag" #'dired-dragon-drag-file))
-
-(defun dired-test ()
-  "Wow."
-  (interactive)
-  (message "%s" (dired-dragon--format-files (dired-get-marked-files))))
+  (evil-define-command dired-dragon-ex-drag-file (bang)
+    "Wrapper around `dired-dragon-drag-file' which allows for a bangable :drag command."
+    (interactive "<!>")
+    (dired-dragon-drag-file bang))
+  (evil-ex-define-cmd "drag" #'dired-dragon-ex-drag-file))
 
 (provide 'dired-dragon)
 ;;; dired-dragon.el ends here
