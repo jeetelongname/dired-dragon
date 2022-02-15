@@ -136,13 +136,14 @@ the the corresponding pdf file will be dragged instead."
                                                     file))
                                                 (buffer-file-name)))
                                        " -x")))
-;;;###autoload
+
 (with-eval-after-load 'evil
   (evil-define-command dired-dragon-ex-drag-file (bang)
     "Wrapper around `dired-dragon-drag-file' which allows for a bangable :drag command.
 See that command for bangs behavior, which is the same as the universal arguments."
     (interactive "<!>")
     (dired-dragon-drag-file bang))
+
   (evil-ex-define-cmd "drag" #'dired-dragon-ex-drag-file))
 
 (provide 'dired-dragon)
