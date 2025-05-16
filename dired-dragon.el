@@ -81,7 +81,7 @@
 
 (defun dired-dragon--format-files (lst)
   "Format all marked files LST and return a string."
-  (format " %s" (mapconcat #'shell-quote-argument lst " ")))
+  (mapconcat (lambda (str) (format "%s " (shell-quote-argument str))) lst " "))
 
 (defun dired-dragon--core (name &optional flags)
   "The Core logic that most of the commands are based off of.
@@ -91,6 +91,7 @@ Takes the NAME argument as the process name and an &optional FLAGS argument."
    dired-dragon-buffer
    (concat
     dired-dragon-location
+    " "
     (dired-dragon--format-files (dired-get-marked-files))
     (format " %s" flags))))
 
