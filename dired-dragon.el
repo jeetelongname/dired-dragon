@@ -69,6 +69,11 @@
   :type 'string
   :group 'dired-dragon)
 
+(defcustom dired-dragon-pdf-modes '(org-mode latex-mode)
+  "All modes that will check for a PDF version of this document."
+  :type 'list
+  :group 'dired-dragon)
+
 (defcustom dired-dragon-drag-pdf-by-default nil
   "If set to non nil pdf's will be dragged by default."
   :type 'boolean
@@ -133,8 +138,8 @@ the the corresponding pdf file will be dragged instead."
                                                     (when (and (if dired-dragon-drag-pdf-by-default
                                                                    (not arg)
                                                                  arg)
-                                                               (or (eq major-mode 'org-mode)
-                                                                   (eq major-mode 'latex-mode))
+                                                               ;; check if current major mode is in `dired-dragon-pdf-modes'
+                                                               (seq-some (lambda (mode) (eq major-mode mode)) dired-dragon-pdf-modes)
                                                                (file-exists-p file))
                                                       file))
                                                   (buffer-file-name)))))
