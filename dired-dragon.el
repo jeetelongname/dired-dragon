@@ -60,6 +60,9 @@
 ;;   | ;; but this is optional, just provide it with a full path (eg /usr/bin/dragon)
 ;;   `----
 ;;; Code:
+
+(require 'seq)
+
 (defgroup dired-dragon ()
   "Dired dragon customise group."
   :group 'convenience)
