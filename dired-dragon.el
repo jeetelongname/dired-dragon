@@ -124,18 +124,20 @@ the the corresponding pdf file will be dragged instead."
   (start-process-shell-command "dragon-current-file" dired-dragon-buffer
                                (concat dired-dragon-location
                                        (format " %s"
-                                               (or
-                                                (and (eq major-mode 'dired-mode)
-                                                     (dired-dragon--format-files (dired-get-marked-files)))
-                                                (let ((file (file-name-with-extension (buffer-file-name) ".pdf")))
-                                                  (when (and (if dired-dragon-drag-pdf-by-default
-                                                                 (not arg)
-                                                               arg)
-                                                             (or (eq major-mode 'org-mode)
-                                                                 (eq major-mode 'latex-mode))
-                                                             (file-exists-p file))
-                                                    file))
-                                                (buffer-file-name)))
+                                               (dired-dragon--format-files
+                                                (list
+                                                 (or
+                                                  (and (eq major-mode 'dired-mode)
+                                                       (dired-dragon--format-files (dired-get-marked-files)))
+                                                  (let ((file (file-name-with-extension (buffer-file-name) ".pdf")))
+                                                    (when (and (if dired-dragon-drag-pdf-by-default
+                                                                   (not arg)
+                                                                 arg)
+                                                               (or (eq major-mode 'org-mode)
+                                                                   (eq major-mode 'latex-mode))
+                                                               (file-exists-p file))
+                                                      file))
+                                                  (buffer-file-name)))))
                                        " -x")))
 
 (with-eval-after-load 'evil
